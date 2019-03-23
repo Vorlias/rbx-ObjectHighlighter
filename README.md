@@ -127,7 +127,7 @@ Undoubtably, there will come a time where you will need to write a custom render
 Render implementations injected using `Renderer.withRenderImpl` must be a **function** that returns a **dictonary of functions**. These functions should be keyed with specific namespaces.
 
 #### onBeforeRender
-`onBeforeRender = function(dt, worldModel)`
+`onBeforeRender: (dt: number, worldModel: Model) => void`
 
 This function will be invoked every step before onRender.
 
@@ -136,7 +136,7 @@ If this function returns `false`, the Renderer will not render the ViewportFrame
 This function can be used to filter highlighted objects from rendering. This can be useful when implementing an implmentation that only renders highlights if there is something obstructing the view of the `targetModel`.
 
 #### onRender
-`onRender = function(deltaTime, worldPart, viewportPart, highlightState)`
+`onRender: (deltaTime: number, worldPart: Part, viewportPart: Part, highlightState: Highlight) => void`
 
 This function will be invoked every step after onRender. It is invoked on every indivual BasePart of the `targetModel` and ViewportFrame respectively.
 
@@ -146,14 +146,14 @@ Because this function is invoked for every BasePart on every frame, it is import
 
 
 #### onAdded
-`onAdded = function(worldPart, viewportPart, highlight)`
+`onAdded: (worldPart: Part, viewportPart: Part, highlight: Highlight)`
 
 This function will be invoked after `Renderer.addToStack`.
 
 This can be used to set up any temporary event connections that need to be used to sync the state of the `worldPart` to the `viewportPart`.
 
 #### onRemoved
-`onRemoved = function(worldPart, viewportPart, highlight)`
+`onRemoved: (worldPart: Part, viewportPart: Part, highlight: Highlight)`
 
 This function will be invoked when `Renderer.removeFromStack` is called.
 

@@ -31,7 +31,7 @@ Our philosophy is to separate highlight state from highlight render rules.
 
 
 # Code Example
-_Check out our other annotated examples in the [`examples`](https://github.com/benbrimeyer/rbx-ObjectHighlighter/tree/master/examples) directory!_
+_Check out our other annotated examples in the [`examples`](https://github.com/vorlias/rbx-objecthighlighter/tree/master/examples) directory!_
 
 ```ts
 import ObjectHighlighter from "rbx-objecthighlighter";

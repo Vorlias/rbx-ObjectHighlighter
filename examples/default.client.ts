@@ -2,8 +2,8 @@ import ObjectHighlighter from "rbx-objecthighlighter";
 
 const Players = game.GetService("Players");
 const ReplicatedStorage = game.GetService("ReplicatedStorage");
-const RunService = game.GetService("RunService")
-const Workspace = game.GetService("Workspace")
+const RunService = game.GetService("RunService");
+const Workspace = game.GetService("Workspace");
 
 // This screen gui will contain our ViewportFrames
 const myScreenGui = new Instance("ScreenGui");

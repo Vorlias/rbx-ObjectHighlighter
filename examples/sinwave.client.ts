@@ -8,7 +8,7 @@ const Workspace = game.GetService("Workspace");
 // This screen gui will contain our ViewportFrames
 const myScreenGui = new Instance("ScreenGui");
 myScreenGui.Name = "ObjectHighlighter";
-myScreenGui.Parent = Players.constPlayer.FindFirstChildOfClass("PlayerGui");
+myScreenGui.Parent = Players.LocalPlayer.FindFirstChildOfClass("PlayerGui");
 
 // Create a Renderer object with an alternative render implementation.
 // `hightlightColor` will override the original model's colors and textures

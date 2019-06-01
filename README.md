@@ -1,6 +1,8 @@
 
 
-# rbx-ObjectHighlighter
+# rbx-objecthighlighter
+_this is the roblox-ts fork of https://github.com/Imaginaerume/rbx-ObjectHighlighter_
+
 This module allows you to make an object or model act as "Always on Top" (or X-Ray) and layer over the normal 3D game world.
 
 ##### Table of Contents
@@ -29,29 +31,27 @@ Our philosophy is to separate highlight state from highlight render rules.
 
 
 # Code Example
-_Check out our other annotated examples in the [`examples`](https://github.com/benbrimeyer/rbx-ObjectHighlighter/tree/master/examples) directory!_
+_Check out our other annotated examples in the [`examples`](https://github.com/vorlias/rbx-objecthighlighter/tree/master/examples) directory!_
 
-```lua
-local ObjectHighlighter = require(ReplicatedStorage:FindFirstChild("ObjectHighlighter"))
+```ts
+import ObjectHighlighter from "rbx-objecthighlighter";
 
--- This screen gui will contain our ViewportFrames
-local myScreenGui = Instance.new("ScreenGui")
-myScreenGui.Name = "ObjectHighlighter"
-myScreenGui.Parent = Players.LocalPlayer.PlayerGui
+// This screen gui will contain our ViewportFrames
+const myScreenGui = new Instance("ScreenGui");
+myScreenGui.Name = "ObjectHighlighter";
+myScreenGui.Parent = Players.LocalPlayer:FindFirstChildOfClass("PlayerGui")
 
-local myRenderer = ObjectHighlighter.createRenderer(myScreenGui)
+const myRenderer = ObjectHighlighter.createRenderer(myScreenGui);
 
--- Assume we have a Model as a direct child of Workspace
-local myHighlight = ObjectHighlighter.createFromTarget(Workspace.Model)
+// Assume we have a Model as a direct child of Workspace
+const myHighlight = ObjectHighlighter.createFromTarget(Workspace.Model)
 
--- Apply our highlight object to our Renderer stack.
--- We can add as many highlight objects to a renderer as we need
-myRenderer:addToStack(myHighlight)
+// Apply our highlight object to our Renderer stack.
+// We can add as many highlight objects to a renderer as we need
+myRenderer.addToStack(myHighlight);
 
-RunService.RenderStepped:Connect(function(dt)
-	-- Our renderer will not render until it steps
-	myRenderer:step(dt)
-end)
+// Our renderer will not render until it steps
+RunService.RenderStepped.Connect(dt => myRenderer.step(dt));
 ```
 
 # API Reference
@@ -72,7 +72,7 @@ Returns a Renderer object targeted to the given `targetScreenGui`.
 ## Renderer
 
 ### Renderer:withRenderImpl
-`Renderer:withRenderImpl(implentationFunc)`
+`Renderer.withRenderImpl(implentationFunc)`
 
 Injects the given `implementationFunc` that will be used by the current Renderer.
 
@@ -83,21 +83,21 @@ By default, the Renderer will use the `worldColor` implementation.
 See Render Implementations below for more details.
 
 ### Renderer:addToStack
-`Renderer:addToStack(highlight)`
+`Renderer.addToStack(highlight)`
 
 Inserts the given `highlight` state to the end of the stack.
 
 The Renderer will iterate through all Highlight states when it's `step` function is invoked.
 
 ### Renderer:removeFromStack
-`Renderer:removeFromStack(highlight)`
+`Renderer.removeFromStack(highlight)`
 
 Removes the given `highlight` state from the stack.
 
 This will remove any active ViewportFrames that may be associated with this highlight state.
 
 ### Renderer:step
-`Renderer:step(deltaTime)`
+`Renderer.step(deltaTime)`
 
 Invoking this method will cause the Renderer to iterate through all highlight states in its stack.
 
@@ -124,10 +124,10 @@ The current pre-built Render Implmentations are:
 
 Undoubtably, there will come a time where you will need to write a custom render implementation.
 
-Render implementations injected using `Renderer:withRenderImpl` must be a **function** that returns a **dictonary of functions**. These functions should be keyed with specific namespaces.
+Render implementations injected using `Renderer.withRenderImpl` must be a **function** that returns a **dictonary of functions**. These functions should be keyed with specific namespaces.
 
 #### onBeforeRender
-`onBeforeRender = function(dt, worldModel)`
+`onBeforeRender: (dt: number, worldModel: Model) => void`
 
 This function will be invoked every step before onRender.
 
@@ -136,7 +136,7 @@ If this function returns `false`, the Renderer will not render the ViewportFrame
 This function can be used to filter highlighted objects from rendering. This can be useful when implementing an implmentation that only renders highlights if there is something obstructing the view of the `targetModel`.
 
 #### onRender
-`onRender = function(deltaTime, worldPart, viewportPart, highlightState)`
+`onRender: (deltaTime: number, worldPart: Part, viewportPart: Part, highlightState: Highlight) => void`
 
 This function will be invoked every step after onRender. It is invoked on every indivual BasePart of the `targetModel` and ViewportFrame respectively.
 
@@ -146,15 +146,15 @@ Because this function is invoked for every BasePart on every frame, it is import
 
 
 #### onAdded
-`onAdded = function(worldPart, viewportPart, highlight)`
+`onAdded: (worldPart: Part, viewportPart: Part, highlight: Highlight)`
 
-This function will be invoked after `Renderer:addToStack`.
+This function will be invoked after `Renderer.addToStack`.
 
 This can be used to set up any temporary event connections that need to be used to sync the state of the `worldPart` to the `viewportPart`.
 
 #### onRemoved
-`onRemoved = function(worldPart, viewportPart, highlight)`
+`onRemoved: (worldPart: Part, viewportPart: Part, highlight: Highlight)`
 
-This function will be invoked when `Renderer:removeFromStack` is called.
+This function will be invoked when `Renderer.removeFromStack` is called.
 
 This is usually used in tandem with the `onAdded` render implementation to clean up any event connections is may have temporarily created.
